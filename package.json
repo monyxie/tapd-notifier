@@ -1,0 +1,11 @@
+{
+  "name": "tapd-notifier",
+  "version": "1.0.0",
+  "main": "notifier.js",
+  "author": "Mony Xie <monyxie@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "node-notifier": "^6.0.0"
+  }
+}
