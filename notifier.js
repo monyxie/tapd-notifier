@@ -14,7 +14,7 @@ let todo = {
     todo_total: 0
 };
 
-let todoNames = ['story', 'task', 'bug', 'launch', 'tobject', 'item', 'total'];
+let todoNames = ['story', 'task', 'bug', 'launch', 'tobject', 'item'];
 let cookies = fs.readFileSync(path.join(__dirname, 'cookies.txt')).toString();
 let icon = path.join(__dirname, 'tapd.png');
 let notifyCount = 0;
@@ -43,14 +43,22 @@ let checkTodos = function () {
             todoNames.forEach(name => {
                 let field = 'todo_' + name;
                 if (current[field] !== todo[field]) {
-                    changed.push(`${name}: ${todo[field]} -> ${current[field]}`);
+                    let num = current[field] - todo[field];
+                    if (num > 0) num = '+' + num;
+
+                    changed.push(`${num} ${name}`);
                     todo[field] = current[field];
                 }
             });
             if (changed.length) {
+                let todos = "    " + changed.join("\n    ");
+                let message = "You have \n\n" + todos;
+                message += '\n';
+                message += `\nTodo count: ${current['todo_total']}`;
+                message += '\nTime: ' + (new Date()).toLocaleTimeString();
                 notifier.notify({
                     title: 'TAPD Notifier',
-                    message: 'time: ' + (new Date()).toLocaleString() + "\n" + changed.join("\n"),
+                    message: message,
                     icon: icon,
                     wait: true,
                     time: notifyCount ? 1000 * 3600 * 24 : 1000 * 5,
